@@ -1,6 +1,6 @@
 Assets folder would be to hold assets, so things like textures and audio, things we put into our game objects to make them work
 Game objects would hold the prefabs we use to create levels and stuff
-Scenes would hold scenes...
-Scripts.......
+Scenes would hold scene
+Script scripts, might be better to include this in game Objects where we name scripts the same as game objects
 
 You get it just tell me if something else works better
