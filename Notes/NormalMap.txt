@@ -1,0 +1,11 @@
+Bemmett Upfield
+Notes on NormalViewPortCreator asset
+
+to use the normal map place the normalmap scene into the game scene, change the r layer (variable on the NormaalViewprotCreator.tscn) to whatever visibility layer you want to check for
+visibility layers are variables that you set on objects to tell a camera if they can see the layer or not, so by setting the r layer to whatever layer you have assigned objects to 
+it will pick up the objects assigned in that layer and output a texture with all the pixels where those objects are being black, it will be one to one with the scenes root viewport, which every scene has but just doesnt tell you...
+to use the texture in a shader, like I at least plan on doing create a texture variable in the shader, sampler2d (you can see an example of this in the normal shader), and select in the editor popup for the shader new viewport entry,
+which if you need one look at the normalviewportcreater.tscn for an example. then the normal map will have pixels that had objects in them alpha value be equal to 1, so now you can do whatever you want to with that normal map
+
+
+just in case someone else wanted to use this, but also just ask me (bennett), if you need any help

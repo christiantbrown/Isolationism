@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://4nsvqo3bcwpg"]
+
+[ext_resource type="Script" path="res://Scripts/OverlayScript.gd" id="1_8g1m0"]
+[ext_resource type="Shader" path="res://Assets/Shader/OverlayShader.gdshader" id="2_csnq6"]
+[ext_resource type="PackedScene" uid="uid://dyodbn3o0xp07" path="res://GameObjects/NormalViewportCreator.tscn" id="3_ldimv"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qwlmv"]
+viewport_path = NodePath("NormalMapViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3euvh"]
+resource_local_to_scene = true
+shader = ExtResource("2_csnq6")
+shader_parameter/objectColor = 1.0
+shader_parameter/displayTestTrue = Vector4(1, 1, 1, 1)
+shader_parameter/displayTestFalse = Vector4(0, 0, 0, 1)
+shader_parameter/myViewport = SubResource("ViewportTexture_qwlmv")
+
+[node name="GameTest" type="Node2D"]
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+light_mask = 0
+visibility_layer = 0
+position = Vector2(576, 324)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+script = ExtResource("1_8g1m0")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_3euvh")
+offset_left = 103.0
+offset_right = 509.0
+offset_bottom = 274.0
+color = Color(0, 0, 0, 0)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+light_mask = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = 235.0
+offset_top = 352.0
+offset_right = 275.0
+offset_bottom = 392.0
+
+[node name="NormalMapViewPort" parent="." instance=ExtResource("3_ldimv")]

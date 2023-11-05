@@ -2,5 +2,7 @@ Assets folder would be to hold assets, so things like textures and audio, things
 Game objects would hold the prefabs we use to create levels and stuff
 Scenes would hold scene
 Script scripts, might be better to include this in game Objects where we name scripts the same as game objects
+Notes holds notes that explain how to use certain things, explaining how the engine works and interacts with certain code
+
 
 You get it just tell me if something else works better

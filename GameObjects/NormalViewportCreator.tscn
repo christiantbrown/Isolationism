@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://dyodbn3o0xp07"]
+
+[ext_resource type="Script" path="res://Scripts/NormalViewport.gd" id="1_58bjy"]
+[ext_resource type="Shader" path="res://Assets/Shader/Normal.gdshader" id="2_i8uui"]
+[ext_resource type="Script" path="res://Scripts/WatchViewPort.gd" id="3_os14o"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_1kdyl"]
+viewport_path = NodePath("WatchViewPort")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_54b0m"]
+resource_local_to_scene = true
+shader = ExtResource("2_i8uui")
+shader_parameter/object = Vector4(1, 1, 1, 1)
+shader_parameter/background = Vector4(0, 0, 0, 0)
+shader_parameter/myArray = SubResource("ViewportTexture_1kdyl")
+
+[node name="NormalViewport" type="SubViewport"]
+script = ExtResource("1_58bjy")
+rLayer = 1
+
+[node name="ApplyFirstShaderHere" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_54b0m")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="WatchViewPort" type="SubViewport" parent="."]
+canvas_cull_mask = 4294966272
+size = Vector2i(1024, 600)
+script = ExtResource("3_os14o")
+renderLayer = 1
+
+[node name="OverlayCamera" type="Camera2D" parent="WatchViewPort"]
+top_level = true
+light_mask = 1023
+z_index = 1
