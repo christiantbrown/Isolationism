@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://buvn6l7sbex12"]
+
+[ext_resource type="Script" path="res://Scripts/CreateOccluder.gd" id="1_yopmg"]
+[ext_resource type="Texture2D" uid="uid://ckhqm606agd06" path="res://Assets/Sprites_Textures/SlimeRightColored.png" id="2_f5al5"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_yopmg")
+texture = ExtResource("2_f5al5")
