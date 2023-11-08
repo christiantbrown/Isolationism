@@ -1,44 +1,71 @@
 shader_type canvas_item;
 uniform vec2 playerPos;
 uniform float radius;
+uniform sampler2D objectMap;
+uniform vec4 objectColor;
+uniform vec4 darkNessColor;
 const int maxStep = 32;
+
+//these values seem to work pretty well for the raycast, play around with them to find better if you want though
+const float minStepD = .5;
+const float hitTargetD = .25;
+const float insideOccluder = -2.0;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
+
 
 void fragment() {
 	//below retrieves current pixel position
-	COLOR = vec4(0.0);
-	ivec2 texPos = ivec2(int((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x), int((1.0 / SCREEN_PIXEL_SIZE.y) * UV.y));
-	//distance between player and current pixel
-	vec2 tPvector = vec2(texPos) - playerPos;
-	if(tPvector.x * tPvector.x + tPvector.y * tPvector.y < radius * radius)
+	vec2 texPos = vec2((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x, (1.0 / SCREEN_PIXEL_SIZE.y) * UV.y);
+	//distance between player and current pixel, which is also used to find the direction for the raycast
+	vec2 vector = (playerPos - texPos);
+	if(vector.x * vector.x + vector.y * vector.y < radius * radius)
 	{
-		float sdfReturn = texture_sdf(vec2((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x, (1.0 / SCREEN_PIXEL_SIZE.y) * UV.y));
+		bool foundInside =false;
+		
+		//retrieves color of object map, testing to see if it is 
+		float pixelObjectColor = texelFetch(objectMap, ivec2(texPos), 0).x == 1.0 ? 1.0 : 0.0;
+		
+		//signed distance float, to find the distance from the nearest occluder
+		float sdfReturn = texture_sdf(texPos);
 		if(sdfReturn < 0.0 || texture_sdf(playerPos) < 0.0){//this means the point is inside an occluder
-			COLOR = vec4(1.0, 0.0, 0.0, 1.0);
+			//un comment all Color assignments and comment all actually used ones to see pixel values
+			
+			//COLOR = vec4(1.0, 0.0, 0.0, 1.0);//red
 		}
 		else{// point is outside occluder test for it
-			COLOR = vec4(1.0, 1.0, 0.0, 1.0);
-			float sdfReturn = texture_sdf(vec2(texPos));
-			vec2 vector = (playerPos - vec2(texPos));
+			//COLOR = vec4(1.0, 1.0, 0.0, 1.0);//yellow this color is assigned if the point is near and tracing along an edge, because it is constantly in a vector field of near 0, but it needs to keep on going from that point
+
 			vector = normalize(vector);
-			vec2 curPos = vec2(texPos);
 			int i = 0;
-			float lengthToCenter = length(playerPos - curPos);
+			float lengthToCenter = length(playerPos - texPos);
+			//adds max distance we can, then checks if hit target, if not retrieve signeddistance again, check if inside occluder, if not loop
 			while(i < maxStep){
-				curPos += vector * max(min(sdfReturn, lengthToCenter), .1);// this number defines how slow the rays will go inside the objects, so the less speed they have the less get through the occluders
-				lengthToCenter = length(playerPos - curPos);
-				if(lengthToCenter < .25){//found the center, close as .25 pixel
+				texPos += vector * max(min(sdfReturn, lengthToCenter), minStepD);// this number defines how slow the rays will go inside the objects, so the less speed they have the less get through the occluders
+				lengthToCenter = length(playerPos - texPos);
+				if(lengthToCenter < hitTargetD){//found the center, close as hittarget
 					i = maxStep;
-					COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+					//COLOR = vec4(0.0, 0.0, 0.0, 1.0);//black
+					foundInside = true;
 				}
-				sdfReturn = texture_sdf(curPos);
-				if(sdfReturn < -5.0){// this number decides how close the pixels will get to the occluders, larger the closer, but also the larger the less colors are set by the while loop
+				sdfReturn = texture_sdf(texPos);
+				if(sdfReturn < insideOccluder){//point is inside occluder, with a error check value of insideOccluder
 					i = maxStep;
-					COLOR = vec4(1.0);
+					//COLOR = vec4(1.0);//white
 				}
 				++i;
-				}
+			}
 		}
-		//COLOR = vec4(1.0);
+		if(foundInside){//need to move this outside to make it cover whole screen (both the if and else statement)
+			
+			COLOR = texture(SCREEN_TEXTURE, SCREEN_UV) * (objectColor * pixelObjectColor);
+			//COLOR = vec4(1.0);
+
+		}
+		else{
+			COLOR *= darkNessColor;
+		}
+		
 	}
 	
 	// Place fragment code here.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bwgk5kdyur8dg"]
+[gd_scene load_steps=10 format=3 uid="uid://bwgk5kdyur8dg"]
 
 [ext_resource type="Script" path="res://Scripts/OverlayScript.gd" id="1_8g1m0"]
 [ext_resource type="Shader" path="res://Assets/Shader/HeartBeat.gdshader" id="2_u3bex"]
@@ -7,11 +7,17 @@
 [ext_resource type="OccluderPolygon2D" uid="uid://doyfjyigk22eh" path="res://Assets/LightOccluder2d/MyOccluder.tres" id="5_mverf"]
 [ext_resource type="OccluderPolygon2D" uid="uid://cbqpjopequ4wo" path="res://Assets/LightOccluder2d/SlimeRightColored_Occ.tres" id="6_lwqaj"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_ttigh"]
+viewport_path = NodePath("NormalMapViewPort")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3euvh"]
 resource_local_to_scene = true
 shader = ExtResource("2_u3bex")
-shader_parameter/playerPos = Vector2(239.69, 173.605)
+shader_parameter/playerPos = Vector2(240, 175)
 shader_parameter/radius = 40.0
+shader_parameter/objectColor = Vector4(0.85, 0.2, 0.085, 0.2)
+shader_parameter/darkNessColor = null
+shader_parameter/objectMap = SubResource("ViewportTexture_ttigh")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4ox7s"]
 viewport_path = NodePath(".")
@@ -36,9 +42,8 @@ script = ExtResource("1_8g1m0")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_3euvh")
-offset_top = 1.0
 offset_right = 1152.0
-offset_bottom = 648.0
+offset_bottom = 647.0
 color = Color(0, 0, 0, 0)
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -47,10 +52,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-offset_left = 235.0
-offset_top = 352.0
-offset_right = 275.0
-offset_bottom = 392.0
+offset_left = 240.0
+offset_top = 175.0
+offset_right = 280.0
+offset_bottom = 215.0
 
 [node name="NormalMapViewPort" parent="." instance=ExtResource("3_ldimv")]
 
@@ -66,7 +71,7 @@ offset_bottom = 648.0
 color = Color(1, 1, 1, 0)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2(238, 140)
+position = Vector2(239, 180)
 occluder = ExtResource("5_mverf")
 
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
