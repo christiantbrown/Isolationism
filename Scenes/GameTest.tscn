@@ -1,28 +1,34 @@
-[gd_scene load_steps=10 format=3 uid="uid://bwgk5kdyur8dg"]
+[gd_scene load_steps=11 format=3 uid="uid://bwgk5kdyur8dg"]
 
+[ext_resource type="Script" path="res://Scenes/HeartBeatProvider.gd" id="1_2t6se"]
 [ext_resource type="Script" path="res://Scripts/OverlayScript.gd" id="1_8g1m0"]
-[ext_resource type="Shader" path="res://Assets/Shader/HeartBeat.gdshader" id="2_u3bex"]
+[ext_resource type="Shader" path="res://Assets/Shader/HeartBeat.gdshader" id="2_fninu"]
 [ext_resource type="PackedScene" uid="uid://dyodbn3o0xp07" path="res://GameObjects/NormalViewportCreator.tscn" id="3_ldimv"]
 [ext_resource type="Script" path="res://Scripts/HeartBeatFunc.gd" id="4_xtsij"]
 [ext_resource type="OccluderPolygon2D" uid="uid://doyfjyigk22eh" path="res://Assets/LightOccluder2d/MyOccluder.tres" id="5_mverf"]
 [ext_resource type="OccluderPolygon2D" uid="uid://cbqpjopequ4wo" path="res://Assets/LightOccluder2d/SlimeRightColored_Occ.tres" id="6_lwqaj"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ttigh"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_t116x"]
 viewport_path = NodePath("NormalMapViewPort")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3euvh"]
 resource_local_to_scene = true
-shader = ExtResource("2_u3bex")
+shader = ExtResource("2_fninu")
 shader_parameter/playerPos = Vector2(240, 175)
 shader_parameter/radius = 40.0
-shader_parameter/objectColor = Vector4(0.85, 0.2, 0.085, 0.2)
-shader_parameter/darkNessColor = null
-shader_parameter/objectMap = SubResource("ViewportTexture_ttigh")
+shader_parameter/objectIntensity = 0.5
+shader_parameter/objectColor = Vector4(0.25, 0.5, 0, 1)
+shader_parameter/darknessIntesity = 0.7
+shader_parameter/darkNessColor = Vector4(0, 0, 0, 1)
+shader_parameter/heartbeat = 0.0
+shader_parameter/objectMap = SubResource("ViewportTexture_t116x")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4ox7s"]
 viewport_path = NodePath(".")
 
 [node name="GameTest" type="Node2D"]
+visibility_layer = 3
+script = ExtResource("1_2t6se")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 light_mask = 0
@@ -37,10 +43,12 @@ offset_right = 308.0
 offset_bottom = 464.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 follow_viewport_enabled = true
 script = ExtResource("1_8g1m0")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visibility_layer = 3
 material = SubResource("ShaderMaterial_3euvh")
 offset_right = 1152.0
 offset_bottom = 647.0
@@ -51,13 +59,26 @@ light_mask = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+visibility_layer = 2
+layout_mode = 0
+offset_left = -84.7556
+offset_top = 253.718
+offset_right = -44.7556
+offset_bottom = 293.718
+scale = Vector2(8.62496, 2.5)
+
 [node name="ColorRect2" type="ColorRect" parent="."]
+visibility_layer = 2
 offset_left = 240.0
 offset_top = 175.0
 offset_right = 280.0
 offset_bottom = 215.0
+scale = Vector2(1.14118, 1.00473)
 
 [node name="NormalMapViewPort" parent="." instance=ExtResource("3_ldimv")]
+canvas_cull_mask = 4293918721
+rLayer = 2
 
 [node name="HeartBeatFunc" type="CanvasLayer" parent="." node_paths=PackedStringArray("playerRef")]
 visible = false
@@ -71,7 +92,7 @@ offset_bottom = 648.0
 color = Color(1, 1, 1, 0)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2(239, 180)
+position = Vector2(240, 150)
 occluder = ExtResource("5_mverf")
 
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="."]

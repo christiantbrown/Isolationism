@@ -9,3 +9,10 @@ which if you need one look at the normalviewportcreater.tscn for an example. the
 
 
 just in case someone else wanted to use this, but also just ask me (bennett), if you need any help
+
+
+
+
+VERY VERY IMPROTANT
+TO USE THIS NODE, AND FOR AN OBJECT TO SHOW UP IN THE NODE ALL PARENTS OF SAID OBJECT NEED TO BE ON THE RENDER LAYER
+THAT MEANS EVEN THE MAIN GAME NODE NEEDS TO BE ON THE RENDER LAYER, SO YOU CANNOT HAVE A CHILD THAT IS AN OBJECT BUT NOT A PARENT

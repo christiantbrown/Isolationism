@@ -15,6 +15,8 @@ func _ready():
 	
 	var overlay:ColorRect = self.get_child(0)
 	
+	
+	
 	overlay.size = mainVP.size
 	pass # Replace with function body.
 
