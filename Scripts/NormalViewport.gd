@@ -21,9 +21,14 @@ func _ready():
 	var watchVP:Viewport = self.get_child(2)
 	
 	print(watchVP.name)
-	print(watchVP.canvas_cull_mask)
-	watchVP.set_canvas_cull_mask_bit(rLayer - 1, true)
-	print(watchVP.canvas_cull_mask)
+	#print(watchVP.canvas_cull_mask)
+	#watchVP.set_canvas_cull_mask_bit(2, false)
+	#watchVP.set_canvas_cull_mask_bit(0, false)
+	#watchVP.set_canvas_cull_mask_bit(4, false)
+	#watchVP.set_canvas_cull_mask_bit(rLayer, true)
+	#watchVP.set_canvas_cull_mask_bit(2, true)
+	watchVP.set_canvas_cull_mask_bit(rLayer -1 , true)
+	#print(watchVP.canvas_cull_mask)
 	
 	pass # Replace with function body.
 

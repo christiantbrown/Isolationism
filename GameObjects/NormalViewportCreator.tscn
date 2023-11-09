@@ -15,6 +15,7 @@ shader_parameter/background = Vector4(0, 0, 0, 0)
 shader_parameter/myArray = SubResource("ViewportTexture_1kdyl")
 
 [node name="NormalViewport" type="SubViewport"]
+canvas_cull_mask = 4293918723
 script = ExtResource("1_58bjy")
 rLayer = 1
 
@@ -24,9 +25,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visibility_layer = 2
 
 [node name="WatchViewPort" type="SubViewport" parent="."]
-canvas_cull_mask = 4294966272
+canvas_cull_mask = 4293918720
 size = Vector2i(1024, 600)
 script = ExtResource("3_os14o")
 renderLayer = 1
@@ -34,4 +36,5 @@ renderLayer = 1
 [node name="OverlayCamera" type="Camera2D" parent="WatchViewPort"]
 top_level = true
 light_mask = 1023
+visibility_layer = 1048575
 z_index = 1

@@ -3,6 +3,7 @@ shader_type canvas_item;
 uniform sampler2D myArray;
 uniform vec4 object;
 uniform vec4 background;
+const vec4 clearBackground = vec4(0.0);
 
 //set this to whatever the null background color will be, right now it is 76
 const float noColorBackground = (76.0 / 255.0);
@@ -23,6 +24,6 @@ void fragment() {
 	//but the color is set to black if the null color is found, and white if any other is found, so we create a texture map where all objects are colored white
 	// and nothing is colored black, which we can use to apply shaders to certain objects, like for the heartbeat mechanic, or for lighting
 	//oh also the camera doesnt render anything that is not in its cull list, notes on that in NormalMap.txt
-	COLOR = (pixel.b == noColorBackground && pixel.g == noColorBackground && pixel.g == noColorBackground) ? background : object;
+	COLOR = pixel.b == 76.0 / 255.0 ? vec4(1.0, 0.0, 0.0, 1.0) : pixel;
 
 }
