@@ -9,6 +9,7 @@ void fragment() {
 	ivec2 texPos = ivec2(int((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x), int((1.0 / SCREEN_PIXEL_SIZE.y) * UV.y));
 	vec4 pixel = texelFetch(myViewport, texPos, 0);
 	COLOR = pixel.a == 1.0 ? vec4(1.0) : pixel ;
+	COLOR = pixel;
 	//COLOR = vec4(float(texPos.y) * SCREEN_PIXEL_SIZE.y);
 	
 }

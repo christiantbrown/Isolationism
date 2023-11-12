@@ -12,5 +12,5 @@ func _ready():
 func _process(delta):
 	time += delta;
 	heartBeat = abs(sin(time))
-	#print(heartBeat)
+
 	pass
