@@ -34,42 +34,53 @@ shape = SubResource("CircleShape2D_kxrcb")
 
 [node name="Player" type="ColorRect" parent="."]
 visibility_layer = 2
-offset_left = 268.0
-offset_top = 424.0
-offset_right = 308.0
-offset_bottom = 464.0
+offset_left = 145.0
+offset_top = 355.0
+offset_right = 185.0
+offset_bottom = 395.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 light_mask = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ColorRect" type="ColorRect" parent="ColorRect"]
-visibility_layer = 2
-layout_mode = 0
-offset_left = -84.7556
-offset_top = 253.718
-offset_right = -44.7556
-offset_bottom = 293.718
-scale = Vector2(8.62496, 2.5)
-
 [node name="ColorRect2" type="ColorRect" parent="."]
 visibility_layer = 2
-offset_left = 240.0
-offset_top = 175.0
-offset_right = 280.0
-offset_bottom = 215.0
+offset_left = 428.0
+offset_top = 422.0
+offset_right = 468.0
+offset_bottom = 462.0
 scale = Vector2(1.14118, 1.00473)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2(240, 150)
+position = Vector2(-169, 48)
 occluder = ExtResource("5_mverf")
 
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
 position = Vector2(985, 280)
 occluder = ExtResource("6_lwqaj")
 
-[node name="CanvasLayer2" parent="." instance=ExtResource("6_bkvol")]
+[node name="HeartBeatOverlay" parent="." instance=ExtResource("6_bkvol")]
 
 [node name="GameOutMostCorner" type="Node2D" parent="."]
 position = Vector2(1152, 648)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+offset_left = 808.0
+offset_top = 131.0
+offset_right = 848.0
+offset_bottom = 171.0
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+visibility_layer = 2
+offset_left = 311.0
+offset_top = 241.0
+offset_right = 350.0
+offset_bottom = 289.0
+scale = Vector2(8.62496, 2.5)
+
+[node name="ColorRect5" type="ColorRect" parent="."]
+offset_left = -414.0
+offset_top = -217.0
+offset_right = -374.0
+offset_bottom = -177.0

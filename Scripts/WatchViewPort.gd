@@ -1,6 +1,6 @@
 extends SubViewport
 
-@export_range (1, 10) var renderLayer:int;
+@export_range (1, 10) var renderLayer:int = 2;
 
 var Cam:Camera2D
 
@@ -27,10 +27,11 @@ func _ready():
 	
 	
 	get_tree().get_root().get_camera_2d().camera_move.connect(_move)
-	_move(get_tree().get_root().get_camera_2d().position)
+	#_move(get_tree().get_root().get_camera_2d().position)
+
+	#self.size = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"),  ProjectSettings.get_setting("display/window/size/viewport_height"))
 	
-	
-	
+
 	pass # Replace with function body.
 
 
@@ -38,7 +39,6 @@ func _ready():
 func _process(delta):
 	pass
 
-func _move(_move_to):
-	Cam.position = _move_to
-	print(str(Cam.position) + " HEY THIS IS SOMETHING")
+func _move(_char_move, _camera_pos, playerOffset):
+	Cam.position = _camera_pos
 	pass

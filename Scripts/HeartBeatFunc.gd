@@ -23,7 +23,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print(get_tree().get_root().get_child(0).name)
+
 	
 	#finding the center of the square right now
 	#var playerPos:Vector2 = playerRef.position + playerRef.size / 2

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bcw6wtc4w6hgi"]
+[gd_scene load_steps=7 format=3 uid="uid://bcw6wtc4w6hgi"]
 
 [ext_resource type="Script" path="res://Scripts/OverlayScript.gd" id="1_hg5x8"]
 [ext_resource type="PackedScene" uid="uid://dyodbn3o0xp07" path="res://GameObjects/NormalViewportCreator.tscn" id="2_t1enw"]
 [ext_resource type="Shader" path="res://Assets/Shader/HeartBeat.gdshader" id="3_48uf5"]
+[ext_resource type="Script" path="res://GameObjects/OverlayMove.gd" id="3_edqo8"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_t116x"]
 viewport_path = NodePath("NormalViewport")
@@ -23,6 +24,7 @@ shader_parameter/heartbeat = 0.0
 shader_parameter/objectMap = SubResource("ViewportTexture_t116x")
 
 [node name="CanvasLayer" type="CanvasLayer"]
+process_priority = 4
 visible = false
 follow_viewport_enabled = true
 script = ExtResource("1_hg5x8")
@@ -30,9 +32,12 @@ script = ExtResource("1_hg5x8")
 [node name="ColorRect" type="ColorRect" parent="."]
 visibility_layer = 3
 material = SubResource("ShaderMaterial_3euvh")
-offset_right = 1152.0
-offset_bottom = 647.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 0)
+script = ExtResource("3_edqo8")
 
 [node name="NormalViewport" parent="." instance=ExtResource("2_t1enw")]
-rLayer = 2

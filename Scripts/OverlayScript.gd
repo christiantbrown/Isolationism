@@ -3,29 +3,36 @@ extends CanvasLayer
 
 var childMat:ShaderMaterial;
 var overLay:ColorRect
+var childViewport:Viewport
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	overLay = self.get_child(0)
 	childMat = self.get_child(0).material
-	self.get_child(1).rLayer = objectLayer
+	childViewport = self.get_child(1)
+
+	childViewport.rLayer = objectLayer
 	self.visible = true;
 
-	
 	get_tree().get_root().get_viewport().set_canvas_cull_mask_bit(objectLayer - 1, false);
 	
-	get_tree().get_root().get_camera_2d().camera_move.connect(_overlay_move)
-	_overlay_move(get_tree().get_root().get_camera_2d().position)
+
 	
+	var screenResolution:Vector2 = Vector2(ProjectSettings.get_setting("display/window/size/viewport_width"),  ProjectSettings.get_setting("display/window/size/viewport_height"))
+	_size_change(screenResolution)
+	childViewport.size = screenResolution
+	
+	childMat.set_shader_parameter("objetMap", childViewport.get_texture())
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print(self.get_parent().heartBeat)
 	childMat.set_shader_parameter("heartbeat", self.get_parent().heartBeat)
 	pass
-	
-func _overlay_move(_move_to):
-	overLay.position = _move_to - overLay.size / 2
-	print("HMMM")
+
+func _size_change(_new_size):
+	var sizeChange = overLay.size - _new_size
+	overLay.position = +(sizeChange / 2)
+	overLay.size = _new_size 
 	pass
