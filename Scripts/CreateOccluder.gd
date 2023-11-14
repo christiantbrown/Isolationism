@@ -127,9 +127,9 @@ func _ready():
 			print("True Final: " + str(finalArray))
 			
 			var xDir:int = 0;
-			var yDir = 1
+			var yDir = 0
 			var adjustedForPixelArray = finalArray.map(func(point):
-				var pos:int = finalArray.find(point)
+				var pos:int = finalArray.find(point)#current point position in array
 				var possibleX:int = (point - finalArray[pos - 1 if pos - 1 != -1 else finalArray.size() - 1]).x
 				if(possibleX > 0):
 					xDir = 1
@@ -145,17 +145,56 @@ func _ready():
 				elif(possibleY < 0):
 					yDir = 0
 				var pointReturn:Vector2 = point
-				print(xDir)
-				print("poss: " + str(possibleX))
 				pointReturn.x += xDir
-				pointReturn.y += yDir
-				return point
+				#pointReturn.y += yDir
+				if(xDir == 1):
+					print(pointReturn)
+				return pointReturn
 				)
+				
+			var realAdjustedForPixelProblem = Array()
+			var previousNormal:Vector2 = Vector2(0,0)
+			for index in finalArray.size():
+				var ogPoint:Vector2 = finalArray[index]
+				var currentX:int = (ogPoint - finalArray[index - 1 if index - 1 != -1 else finalArray.size() - 1]).x
+				if(currentX != 0):
+					currentX /= abs(currentX)
+				var futureX:int = (finalArray[index + 1 if index + 1 != finalArray.size() else 0] - ogPoint).x
+				if(futureX != 0):
+					futureX /= abs(futureX)
+				var currentY:int = (ogPoint - finalArray[index - 1 if index - 1 != -1 else finalArray.size() - 1]).y
+				if(currentY != 0):
+					currentY /= abs(currentY)
+				var futureY:int = (finalArray[index + 1 if index + 1 != finalArray.size() else 0] - ogPoint).y
+				if(futureY != 0):
+					futureY /= abs(futureY)
+				if(currentX > 0):
+					if((futureY != previousNormal.y || currentY != previousNormal.y) && (futureY != 0)):
+						xDir = 1
+				elif(currentX == 0):
+					xDir = xDir
+				elif(currentX < 0):
+					if((futureY != previousNormal.y || currentY != previousNormal.y) && futureY != 0):
+						xDir = 0
+					else:
+						xDir = xDir
+				if(currentY == 1 && index != 0 && futureX != previousNormal.x && futureX != 0):
+					print("X = 0 in points: " + str(index) + " || OG POINT: " + str(ogPoint) + " || Future: " + str(futureY) + " || current: " + str(currentY) + " || previousNormal.y: " + str(previousNormal.y))
+					yDir = 1
+				
+				#fix y a tiny bit, I dont know how, something with previous y and x youll figure it out, just notice right side slime descends in pixels too fast
+				if(currentX != 0):
+					previousNormal.x = currentX
+				if(currentY != 0):
+					previousNormal.y = currentY 
+				ogPoint.x += xDir
+				ogPoint.y += yDir
+				realAdjustedForPixelProblem.append(ogPoint)
 			
-			print("Real Final" + str(adjustedForPixelArray))
+			print("Real Final" + str(realAdjustedForPixelProblem))
 			
 			var occluder:OccluderPolygon2D = OccluderPolygon2D.new()
-			var packedVector:PackedVector2Array = PackedVector2Array(adjustedForPixelArray)
+			var packedVector:PackedVector2Array = PackedVector2Array(realAdjustedForPixelProblem)
 			print(packedVector)
 			occluder.polygon = packedVector
 			occluder.resource_name = texture.resource_path.get_slice("/", texture.resource_path.get_slice_count("/") - 1).get_slice(".", 0)  + "_Occ"
