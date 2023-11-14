@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://GameObjects/OverlayMove.gd" id="3_edqo8"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_t116x"]
-viewport_path = NodePath("NormalViewport")
+viewport_path = NodePath(".")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3euvh"]
 resource_local_to_scene = true

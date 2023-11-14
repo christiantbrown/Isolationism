@@ -1,36 +1,68 @@
-[gd_scene load_steps=8 format=3 uid="uid://bwgk5kdyur8dg"]
+[gd_scene load_steps=13 format=3 uid="uid://bwgk5kdyur8dg"]
 
 [ext_resource type="Script" path="res://Scripts/HeartBeatProvider.gd" id="1_2t6se"]
 [ext_resource type="Script" path="res://Scripts/PlayerCameraController.gd" id="2_5ngw3"]
 [ext_resource type="Script" path="res://Scripts/CharacterController.gd" id="3_ewgu7"]
+[ext_resource type="Texture2D" uid="uid://ckhqm606agd06" path="res://Assets/Sprites_Textures/SlimeRightColored.png" id="4_1t73s"]
 [ext_resource type="OccluderPolygon2D" uid="uid://doyfjyigk22eh" path="res://Assets/LightOccluder2d/MyOccluder.tres" id="5_mverf"]
 [ext_resource type="PackedScene" uid="uid://bcw6wtc4w6hgi" path="res://GameObjects/HeartBeatOverlay.tscn" id="6_bkvol"]
-[ext_resource type="OccluderPolygon2D" uid="uid://cbqpjopequ4wo" path="res://Assets/LightOccluder2d/SlimeRightColored_Occ.tres" id="6_lwqaj"]
+[ext_resource type="OccluderPolygon2D" uid="uid://dlfer7gril21f" path="res://Assets/LightOccluder2d/SlimeRightColored_Occ.tres" id="6_lwqaj"]
+[ext_resource type="Script" path="res://Scripts/MonsterRawr.gd" id="8_8du18"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oj8gv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_1t73s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kxrcb"]
+radius = 11.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_80jsc"]
+size = Vector2(13, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_akiea"]
+size = Vector2(337, 120)
 
 [node name="GameTest" type="Node2D"]
 visibility_layer = 3
 script = ExtResource("1_2t6se")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(610.715, 367.735)
+script = ExtResource("3_ewgu7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+position = Vector2(7, 8)
+sprite_frames = SubResource("SpriteFrames_oj8gv")
+
+[node name="Area2D" type="Area2D" parent="CharacterBody2D"]
+visible = false
+collision_layer = 2
+script = ExtResource("8_8du18")
+
+[node name="RealCollision" type="CollisionShape2D" parent="CharacterBody2D/Area2D"]
+position = Vector2(5.28497, 7.26503)
+shape = SubResource("CircleShape2D_kxrcb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(7.5, 8)
+shape = SubResource("RectangleShape2D_80jsc")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
+visibility_layer = 0
+polygon = PackedVector2Array(2, 0, 4, 0, 6, 2, 6, 3, 7, 4, 8, 4, 9, 5, 10, 5, 11, 6, 14, 6, 12, 8, 12, 10, 13, 11, 13, 12, 14, 13, 14, 15, 13, 16, 3, 16, 2, 15, 2, 14, 1, 13, 1, 11, 2, 10, 2, 9, 3, 8, 3, 4, 2, 3, 2, 2)
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 light_mask = 0
 visibility_layer = 0
 editor_draw_limits = true
 script = ExtResource("2_5ngw3")
-
-[node name="MyCharacter" type="CharacterBody2D" parent="."]
-position = Vector2(576, 323)
-script = ExtResource("3_ewgu7")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MyCharacter"]
-polygon = PackedVector2Array(2, 0, 3, 0, 5, 2, 5, 3, 6, 4, 7, 4, 8, 5, 9, 5, 10, 6, 13, 6, 11, 8, 11, 9, 12, 10, 12, 11, 13, 12, 13, 14, 12, 15, 3, 15, 2, 14, 2, 13, 1, 12, 1, 10, 2, 9, 2, 8, 3, 7, 3, 3, 2, 2, 2, 1)
-
-[node name="Area2D" type="Area2D" parent="MyCharacter"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MyCharacter/Area2D"]
-position = Vector2(-0.629997, 0)
-shape = SubResource("CircleShape2D_kxrcb")
 
 [node name="Player" type="ColorRect" parent="."]
 visibility_layer = 2
@@ -57,7 +89,7 @@ position = Vector2(-169, 48)
 occluder = ExtResource("5_mverf")
 
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
-position = Vector2(985, 280)
+position = Vector2(645, 371)
 occluder = ExtResource("6_lwqaj")
 
 [node name="HeartBeatOverlay" parent="." instance=ExtResource("6_bkvol")]
@@ -71,16 +103,22 @@ offset_top = 131.0
 offset_right = 848.0
 offset_bottom = 171.0
 
-[node name="ColorRect4" type="ColorRect" parent="."]
-visibility_layer = 2
-offset_left = 311.0
-offset_top = 241.0
-offset_right = 350.0
-offset_bottom = 289.0
-scale = Vector2(8.62496, 2.5)
-
 [node name="ColorRect5" type="ColorRect" parent="."]
 offset_left = -414.0
 offset_top = -217.0
 offset_right = -374.0
 offset_bottom = -177.0
+
+[node name="Monster" type="Area2D" parent="."]
+visibility_layer = 2
+position = Vector2(311, 241)
+script = ExtResource("8_8du18")
+
+[node name="ColorRect4" type="ColorRect" parent="Monster"]
+visibility_layer = 2
+offset_right = 337.0
+offset_bottom = 120.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Monster"]
+position = Vector2(168.5, 60)
+shape = SubResource("RectangleShape2D_akiea")

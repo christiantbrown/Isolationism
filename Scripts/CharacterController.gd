@@ -11,6 +11,9 @@ var inputDown:bool = false
 var inputUp:bool = false
 
 
+var moveSpeed:float = 10.0
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	characterCamera = self.get_tree().get_root().get_camera_2d()
@@ -60,18 +63,39 @@ func _process(delta):
 func _physics_process(delta):
 	#use this function for all character movement and non animation actions
 	if(inputRight || inputLeft || inputDown || inputUp):
-		_move(inputLeft, inputRight, inputDown, inputUp)
+		_move(inputLeft, inputRight, inputDown, inputUp, delta)
 	pass
 	
-func _move(left, right, down, up):
+func _move(left, right, down, up, delta):
 	var direction:Vector2 = Vector2(0,0)
 	
-	direction.x -= 1 if left else 0
-	direction.x += 1 if right else 0
-	direction.y += 1 if down else 0
-	direction.y -= 1 if up else 0
+	direction.x -= moveSpeed if left else 0
+	direction.x += moveSpeed if right else 0
+	direction.y += moveSpeed if down else 0
+	direction.y -= moveSpeed if up else 0
 	
-	self.position += direction
+	
+	var xCanMove:bool = true
+	var yCanMove:bool = true
+	
+	#test if there is collision in both y and x direction to deal with corners
+	if(direction.x != 0):
+		var testXColl:KinematicCollision2D = move_and_collide(Vector2(direction.x, 0) * delta, true, .2, true)
+		if(testXColl):
+			print("Collision X: NORMAL: " + str(testXColl.get_normal()) + " ||| Point: " + str(testXColl.get_position()))
+			xCanMove = false
+	if(direction.y != 0):
+		var testYColl:KinematicCollision2D = move_and_collide(Vector2(0, direction.y) * delta, true, .2, true)
+		if(testYColl):
+			print("Collision Y: NORMAL: " + str(testYColl.get_normal()) + " ||| Point: " + str(testYColl.get_position()))
+			yCanMove = false
+	
+	#if no collision add movement, dont see any thing else that is needed if more things are wanted add them to this move function
+	if(xCanMove):
+		self.position.x += direction.x * delta
+	if(yCanMove):
+		self.position.y += direction.y * delta
+		
 	characterMove.emit(self.position, Vector2(0, 0))
 	pass
 
