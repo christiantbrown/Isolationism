@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://xvpw02326onj"]
+
+[ext_resource type="Shader" path="res://Assets/Shader/3DSonarHeartbeat.gdshader" id="1_klhfa"]
+[ext_resource type="Script" path="res://Scenes/3DCharacterController.gd" id="2_vjxbr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e1ctl"]
+render_priority = 0
+shader = ExtResource("1_klhfa")
+
+[sub_resource type="QuadMesh" id="QuadMesh_5nlhv"]
+material = SubResource("ShaderMaterial_e1ctl")
+size = Vector2(2, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yihlc"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62568, 1.61052)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.981627, 0.190809, 0, -0.190809, 0.981627, 0, 3.695, 11.77)
+script = ExtResource("2_vjxbr")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Camera3D"]
+mesh = SubResource("QuadMesh_5nlhv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_yihlc")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(-25.69, 0, 0, 0, 1, 0, 0, 0, 26.52, 0, 0, 6.24483)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10.3384, 1.61052)
+light_color = Color(0.607843, 0.494118, 0.32549, 1)
+light_energy = 11.857
+spot_range = 21.015
