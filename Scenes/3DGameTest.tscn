@@ -23,7 +23,6 @@ transform = Transform3D(1, 0, 0, 0, 0.981627, 0.190809, 0, -0.190809, 0.981627, 
 script = ExtResource("2_vjxbr")
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Camera3D"]
 mesh = SubResource("QuadMesh_5nlhv")
