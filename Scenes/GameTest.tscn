@@ -63,7 +63,7 @@ shape = SubResource("RectangleShape2D_80jsc")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
 visibility_layer = 0
-polygon = PackedVector2Array(2, 0, 4, 0, 6, 2, 6, 3, 7, 4, 8, 4, 9, 5, 10, 5, 11, 6, 14, 6, 12, 8, 12, 10, 13, 11, 13, 12, 14, 13, 14, 15, 13, 16, 3, 16, 2, 15, 2, 14, 1, 13, 1, 11, 2, 10, 2, 9, 3, 8, 3, 4, 2, 3, 2, 2)
+polygon = PackedVector2Array(2, 0, 4, 0, 6, 2, 6, 3, 7, 4, 8, 4, 9, 5, 10, 5, 11, 6, 14, 6, 12, 9, 13, 10, 13, 11, 14, 12, 14, 15, 13, 16, 3, 16, 2, 15, 2, 14, 1, 13, 1, 10, 2, 9, 2, 8, 3, 7, 3, 4, 2, 3, 2, 2)
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 light_mask = 0
@@ -96,7 +96,7 @@ position = Vector2(-169, 48)
 occluder = ExtResource("5_mverf")
 
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
-position = Vector2(645, 371)
+position = Vector2(625, 368)
 occluder = ExtResource("6_lwqaj")
 
 [node name="HeartBeatOverlay" parent="." instance=ExtResource("6_bkvol")]

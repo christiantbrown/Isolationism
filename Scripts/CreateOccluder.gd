@@ -128,32 +128,9 @@ func _ready():
 			
 			var xDir:int = 0;
 			var yDir = 0
-			var adjustedForPixelArray = finalArray.map(func(point):
-				var pos:int = finalArray.find(point)#current point position in array
-				var possibleX:int = (point - finalArray[pos - 1 if pos - 1 != -1 else finalArray.size() - 1]).x
-				if(possibleX > 0):
-					xDir = 1
-				elif(possibleX == 0):
-					xDir = xDir
-				elif(possibleX < 0):
-					xDir = 0
-				var possibleY:int = -(point - finalArray[pos - 1 if pos - 1 != -1 else finalArray.size() - 1]).y
-				if(possibleY > 0):
-					yDir = -1
-				elif(possibleY == 0):
-					yDir = yDir
-				elif(possibleY < 0):
-					yDir = 0
-				var pointReturn:Vector2 = point
-				pointReturn.x += xDir
-				#pointReturn.y += yDir
-				if(xDir == 1):
-					print(pointReturn)
-				return pointReturn
-				)
-				
 			var realAdjustedForPixelProblem = Array()
 			var previousNormal:Vector2 = Vector2(0,0)
+			#below for loop adjust the points to be on the outside of the pixels, as pixels take up a whole square and we want to be on the edges, as reasonably as we can
 			for index in finalArray.size():
 				var ogPoint:Vector2 = finalArray[index]
 				var currentX:int = (ogPoint - finalArray[index - 1 if index - 1 != -1 else finalArray.size() - 1]).x
@@ -178,29 +155,32 @@ func _ready():
 						xDir = 0
 					else:
 						xDir = xDir
-				if(currentY == 1 && index != 0 && futureX != previousNormal.x && futureX != 0):
-					print("X = 0 in points: " + str(index) + " || OG POINT: " + str(ogPoint) + " || Future: " + str(futureY) + " || current: " + str(currentY) + " || previousNormal.y: " + str(previousNormal.y))
-					yDir = 1
-				
-				#fix y a tiny bit, I dont know how, something with previous y and x youll figure it out, just notice right side slime descends in pixels too fast
+				if(index != 0 && ((currentX != previousNormal.x && previousNormal.x != 0 && currentX != 0) || futureX != previousNormal.x && futureX != 0 && currentX == 0 && previousNormal.x != 0)):
+					if(currentX == 0): previousNormal.x = futureX
+					yDir = 1 if yDir == 0 else 0
 				if(currentX != 0):
 					previousNormal.x = currentX
 				if(currentY != 0):
 					previousNormal.y = currentY 
 				ogPoint.x += xDir
 				ogPoint.y += yDir
-				realAdjustedForPixelProblem.append(ogPoint)
+				if(realAdjustedForPixelProblem.find(ogPoint) == -1):
+					realAdjustedForPixelProblem.append(ogPoint)
 			
 			print("Real Final" + str(realAdjustedForPixelProblem))
 			
-			var occluder:OccluderPolygon2D = OccluderPolygon2D.new()
+			var fileName:String = texture.resource_path.get_slice("/", texture.resource_path.get_slice_count("/") - 1).get_slice(".", 0)
 			var packedVector:PackedVector2Array = PackedVector2Array(realAdjustedForPixelProblem)
 			print(packedVector)
+			
+			var occluder:OccluderPolygon2D = OccluderPolygon2D.new()
 			occluder.polygon = packedVector
-			occluder.resource_name = texture.resource_path.get_slice("/", texture.resource_path.get_slice_count("/") - 1).get_slice(".", 0)  + "_Occ"
+			occluder.resource_name = fileName  + "_Occ"
 			occluder.resource_path = "res://Assets/LightOccluder2d/" + occluder.resource_name + ".tres"
 			print(occluder.resource_path)
 			print(ResourceSaver.save(occluder, "res://Assets/LightOccluder2d/" + occluder.resource_name + ".tres"))
+			
+			#cant save colliders as resources, so just copy the polygon from the occluder to the collider polygon? :(
 			
 			
 	elif(texture == null):

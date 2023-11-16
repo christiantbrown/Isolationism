@@ -2,14 +2,17 @@ extends ColorRect
 var Actualposition:Vector2 = Vector2(0,0)
 var CharPos:Vector2 = Vector2(0,0)
 var frameOne:bool = true
-var funnyViewport:Viewport
+var objectViewport:Viewport
+var selectedViewport:Viewport
 var preSize:Vector2 = Vector2(0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.position = Actualposition
-	funnyViewport = self.get_parent().get_child(1)
+	objectViewport = self.get_parent().get_child(1)
+	selectedViewport = self.get_parent().get_child(2)
 	self.material.set_shader_parameter("playerPos", CharPos)
-	self.material.set_shader_parameter("objectMap", funnyViewport.get_texture())
+	self.material.set_shader_parameter("objectMap", objectViewport.get_texture())
+	self.material.set_shader_parameter("selectedMap", selectedViewport.get_texture())
 	get_tree().get_root().connect("size_changed", _size_Change)
 	preSize = self.size
 	pass # Replace with function body.
@@ -21,7 +24,8 @@ func _process(delta):
 		frameOne = false
 		self.position = Actualposition
 		self.material.set_shader_parameter("playerPos", CharPos)
-		self.material.set_shader_parameter("objectMap", funnyViewport.get_texture())
+		self.material.set_shader_parameter("objectMap", objectViewport.get_texture())
+		self.material.set_shader_parameter("selectedMap", selectedViewport.get_texture())
 	#print(self.position)
 	pass
 
@@ -30,8 +34,10 @@ func _move(character_move, camera_pos, playerOffset):
 	Actualposition = camera_pos - self.size / 2
 	CharPos = character_move - self.position
 	self.material.set_shader_parameter("playerPos", CharPos)
-	if(funnyViewport != null):
-		self.material.set_shader_parameter("objectMap", funnyViewport.get_texture())
+	if(objectViewport != null):
+		self.material.set_shader_parameter("objectMap", objectViewport.get_texture())
+	if(selectedViewport != null):
+		self.material.set_shader_parameter("selectedMap", selectedViewport.get_texture())
 	
 
 func _size_Change():
