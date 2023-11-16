@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcw6wtc4w6hgi"]
+[gd_scene load_steps=8 format=3 uid="uid://bcw6wtc4w6hgi"]
 
 [ext_resource type="Script" path="res://Scripts/OverlayScript.gd" id="1_hg5x8"]
 [ext_resource type="PackedScene" uid="uid://dyodbn3o0xp07" path="res://GameObjects/NormalViewportCreator.tscn" id="2_t1enw"]
@@ -6,15 +6,20 @@
 [ext_resource type="Script" path="res://GameObjects/OverlayMove.gd" id="3_edqo8"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_t116x"]
-viewport_path = NodePath("NormalViewport")
+viewport_path = NodePath("ObjectLayer")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g2e6i"]
+viewport_path = NodePath("SelectedLayer")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3euvh"]
 resource_local_to_scene = true
 shader = ExtResource("3_48uf5")
 shader_parameter/playerPos = Vector2(240, 175)
 shader_parameter/radius = 40.0
-shader_parameter/objectIntensity = 1.0
+shader_parameter/objectIntensity = 0.5
 shader_parameter/objectColor = Vector4(0.25, 0, 1, 1)
+shader_parameter/selectedIntensity = 0.3
+shader_parameter/selectedColor = Vector4(0.925, 0.831, 0.176, 1)
 shader_parameter/darknessIntesity = 0.3
 shader_parameter/darkNessColor = Vector4(0, 0, 0, 1)
 shader_parameter/hBOCDistance = 2.0
@@ -22,6 +27,7 @@ shader_parameter/hBOCIntensity = 0.3
 shader_parameter/heartBeatOutlineColor = Vector4(1, 1, 1, 1)
 shader_parameter/heartbeat = 0.0
 shader_parameter/objectMap = SubResource("ViewportTexture_t116x")
+shader_parameter/selectedMap = SubResource("ViewportTexture_g2e6i")
 
 [node name="CanvasLayer" type="CanvasLayer"]
 process_priority = 4
@@ -40,4 +46,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0)
 script = ExtResource("3_edqo8")
 
-[node name="NormalViewport" parent="." instance=ExtResource("2_t1enw")]
+[node name="ObjectLayer" parent="." instance=ExtResource("2_t1enw")]
+
+[node name="SelectedLayer" parent="." instance=ExtResource("2_t1enw")]
+rLayer = 3

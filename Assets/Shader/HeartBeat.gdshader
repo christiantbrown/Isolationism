@@ -4,6 +4,9 @@ uniform float radius;
 uniform sampler2D objectMap;
 uniform float objectIntensity;
 uniform vec4 objectColor;
+uniform sampler2D selectedMap;
+uniform float selectedIntensity;
+uniform vec4 selectedColor;
 uniform float darknessIntesity;//linear interpolation between darkness and light, closer to one more dark shade, closer to 0 more light
 uniform vec4 darkNessColor;
 uniform float hBOCDistance;//this is the outline for the heartbeat "circle" it starts at the edge of the radius and goes 
@@ -24,11 +27,17 @@ uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
 void fragment() {
 	//below retrieves current pixel position
 	vec2 texPos = vec2((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x, (1.0 / SCREEN_PIXEL_SIZE.y) * UV.y);
-	ivec2 savedTexPos = ivec2(texPos);
+	vec4 basePixelColor = texture(SCREEN_TEXTURE, SCREEN_UV);
 	//distance between player and current pixel, which is also used to find the direction for the raycast
 	vec2 vector = (playerPos - texPos);
 	int foundInside = 1; 
 	float playerDistance;
+	
+	vec4 selectedPixel = texelFetch(selectedMap, ivec2(texPos), 0);
+	if(selectedPixel.a == 1.0 && selectedPixel.b != 0.0){
+		//this just means the pixel is a "selected object"
+		basePixelColor = mix(basePixelColor, selectedColor, selectedIntensity);
+	}
 	if(vector.x * vector.x + vector.y * vector.y < radius * heartbeat * radius * heartbeat)
 	{
 		foundInside += 2;
@@ -75,15 +84,14 @@ void fragment() {
 		
 	}
 	vec4 buffer = texture(SCREEN_TEXTURE, SCREEN_UV);
-	vec4 basePixelColor = texture(SCREEN_TEXTURE, SCREEN_UV);
 	if(foundInside > 1){//inside circle check for object to render
 		ivec2 texPos2 = ivec2(int((1.0 / SCREEN_PIXEL_SIZE.x) * UV.x), int((1.0 / SCREEN_PIXEL_SIZE.y) * UV.y));
 		vec4 pixel = texelFetch(objectMap, texPos2, 0);
 		buffer = texelFetch(objectMap, texPos2, 0);
 		//screen texture alpha channel is never zero, so you can't test for that, instead you need to see if its equal to the base color, which is this
-		if(pixel.a == 1.0 && pixel.b != 0.0){
+		if(pixel.a == 1.0 && pixel.b != 0.0 && selectedPixel.b == 0.0){
 			//basePixelColor = mix(buffer, objectColor, 2.0);
-			basePixelColor = mix(pixel, objectColor, objectIntensity);
+			basePixelColor = mix(basePixelColor, objectColor, objectIntensity);
 		}
 
 		//basePixelColor = buffer;
@@ -97,10 +105,10 @@ void fragment() {
 				}
 			}
 	}
+	
+	
 	COLOR = mix(basePixelColor, darkNessColor, float(foundInside % 2) * darknessIntesity);
-	//COLOR = mix(basePixelColor, darkNessColor, 1.0);
-	//basePixelColor = basePixelColor;
-	//COLOR = mix(basePixelColor, darkNessColor, 0.0);
+
 	if(basePixelColor.a != 1.0){//this checks if the alphachannel is bellow 1.0
 		COLOR = vec4(basePixelColor.a);
 	}
