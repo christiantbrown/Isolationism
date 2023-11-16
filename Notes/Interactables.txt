@@ -1,0 +1,8 @@
+For all interactable objects in their script there needs to be a function defined as
+func _interact_test(interact_info):
+to see how this func works go to the character controller script
+it sends this information to the object, which thorugh this interact_test function it will do whatever action you want
+
+if you need it to have more information just add it to the array in the character controller, but add it to the end of the array of course, to not mess up any other code
+also, as you can see inside the character controller,
+all interactable objects need to be in the visibility layer 2, otherwise they will not recieve input, and also not be colored by the shader
